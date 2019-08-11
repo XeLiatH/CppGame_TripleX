@@ -2,7 +2,9 @@
 
 int main()
 {
-    std::cout << "Hello to the outer space!";
+    std::cout << "You are a secret agent breaking into the server room...";
+    std::cout << std::endl;
+    std::cout << "Enter the correct code to continue...";
 
     return 0;
 }
