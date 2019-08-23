@@ -1,15 +1,93 @@
 #include <iostream>
 #include "ctime"
 
-void PrintIntro(int Difficulty)
+void PrintIntro(int NumberOfDifficulties)
 {
-    std::cout << "\n\nYou are a secret agent breaking into a level " << Difficulty;
-    std::cout << "secure server room...\nEnter the correct code to continue...\n\n";
+    std::cout << "\n\n  ** You are a secret agent breaking into a server room";
+    std::cout << "\n    ** You will need to get through " << NumberOfDifficulties << " levels to gain access.";
+
+    std::cout << R"(
+
+                    ,---------------------------,
+                    |  /---------------------\  |
+                    | |                       | |
+                    | |     Hack me please    | |
+                    | |      Services         | |
+                    | |       Company         | |
+                    | |                       | |
+                    |  \_____________________/  |
+                    |___________________________|
+                ,---\_____     []     _______/------,
+              /         /______________\           /|
+            /___________________________________ /  | ___
+            |                                   |   |    )
+            |  _ _ _                 [-------]  |   |   (
+            |  o o o                 [-------]  |  /    _)_
+            |__________________________________ |/     /  /
+        /-------------------------------------/|      ( )/
+      /-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/ /
+    /-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/ /
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+    )";
 }
 
-bool PlayGame(int Difficulty)
+void printLives(int AmountOfLives)
 {
-    PrintIntro(Difficulty);
+    std::cout << "\n ** Lives: ";
+    for (int i = 0; i < AmountOfLives; i++)
+    {
+        // TODO: figure out how to print actual hearts
+        std::cout << "| ";
+    }
+
+    std::cout << std::endl;
+}
+
+void PrintLevelIntro(int Difficulty, int AmountOfLives)
+{
+    std::wcout << "\n\n ** Level " << Difficulty;
+
+    printLives(AmountOfLives);
+}
+
+void PrintAccessDenied()
+{
+    std::cout << R"(
+
+    ## #################################################################### ##
+    ##     ___                               ____             _          __ ##
+    ##    /   | _____________  __________   / __ \___  ____  (_)__  ____/ / ##
+    ##   / /| |/ ___/ ___/ _ \/ ___/ ___/  / / / / _ \/ __ \/ / _ \/ __  /  ##
+    ##  / ___ / /__/ /__/  __(__  |__  )  / /_/ /  __/ / / / /  __/ /_/ /   ##
+    ## /_/  |_\___/\___/\___/____/____/  /_____/\___/_/ /_/_/\___/\__,_/    ##
+    ## ____________________________________________________________________ ##
+    ## ******************************************************************** ##
+    ## #################################################################### ##
+
+    )";
+}
+
+void PrintAccessGranted()
+{
+    std::cout << R"(
+
+    ## ############################################################################ ##
+    ##     ___                               ______                 __           __ ##
+    ##    /   | _____________  __________   / ____/________ _____  / /____  ____/ / ##
+    ##   / /| |/ ___/ ___/ _ \/ ___/ ___/  / / __/ ___/ __ `/ __ \/ __/ _ \/ __  /  ##
+    ##  / ___ / /__/ /__/  __(__  |__  )  / /_/ / /  / /_/ / / / / /_/  __/ /_/ /   ##
+    ## /_/  |_\___/\___/\___/____/____/   \____/_/   \__,_/_/ /_/\__/\___/\__,_/    ##
+    ## ____________________________________________________________________________ ##
+    ## **************************************************************************** ##
+    ## ############################################################################ ##
+
+    )";
+}
+
+bool PlayGame(int Difficulty, int AmountOfLives)
+{
+    PrintLevelIntro(Difficulty, AmountOfLives);
 
     const int CodeA = rand() % Difficulty + Difficulty;
     const int CodeB = rand() % Difficulty + Difficulty;
@@ -18,9 +96,9 @@ bool PlayGame(int Difficulty)
     const int CodeSum = CodeA + CodeB + CodeC;
     const int CodeProduct = CodeA * CodeB * CodeC;
 
-    std::cout << "\n+ There are 3 numbers in the code";
-    std::cout << "\n+ The codes add-up to: " << CodeSum;
-    std::cout << "\n+ The codes multiply to give: " << CodeProduct << std::endl;
+    std::cout << "\n > There are 3 numbers in the code";
+    std::cout << "\n > The codes add-up to: " << CodeSum;
+    std::cout << "\n > The codes multiply to give: " << CodeProduct << std::endl;
 
     int GuessA, GuessB, GuessC;
     std::cin >> GuessA >> GuessB >> GuessC;
@@ -37,21 +115,40 @@ int main()
 
     const int MaximumLevelDifficulty = 5;
     int LevelDifficulty = 1;
+    int AmountOfLives = 5;
+
+    PrintIntro(MaximumLevelDifficulty);
 
     bool bLevelComplete;
     while (LevelDifficulty <= MaximumLevelDifficulty)
     {
-        bLevelComplete = PlayGame(LevelDifficulty);
+        bLevelComplete = PlayGame(LevelDifficulty, AmountOfLives);
         std::cin.clear();  // Clears any errors
         std::cin.ignore(); // Discards the buffer
 
         if (bLevelComplete)
         {
-            ++LevelDifficulty;
+            PrintAccessGranted();
+
+            std::cout << "\n ** Good Job! You have passed the level " << LevelDifficulty << std::endl;
+            LevelDifficulty++;
+        }
+        else
+        {
+            AmountOfLives--;
+            PrintAccessDenied();
+
+            if (AmountOfLives <= 0)
+            {
+                std::cout << "\n\n ** You have exceeded the amount of lives. They reached you and killed you!\n\n";
+                return 0;
+            }
         }
     }
 
-    std::cout << "\n\n*** Great work! Now get out of there! ***\n\n";
+    PrintAccessGranted();
+
+    std::cout << "\n\n ** Great work! Now get out of there!\n\n";
 
     return 0;
 }
