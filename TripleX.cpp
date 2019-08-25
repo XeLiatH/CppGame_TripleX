@@ -35,10 +35,53 @@ void PrintIntro(int NumberOfDifficulties)
 void printLives(int AmountOfLives)
 {
     std::cout << "\n ** Lives: ";
-    for (int i = 0; i < AmountOfLives; i++)
+    switch (AmountOfLives)
     {
-        // TODO: figure out how to print actual hearts
-        std::cout << "| ";
+    case 5:
+        std::cout << R"(
+
+  ,-.-.  ,-.-.  ,-.-.  ,-.-.  ,-.-.
+  `. ,'  `. ,'  `. ,'  `. ,'  `. ,'
+    `      `      `      `      `
+
+        )";
+        break;
+    case 4:
+        std::cout << R"(
+
+  ,-.-.  ,-.-.  ,-.-.  ,-.-.
+  `. ,'  `. ,'  `. ,'  `. ,'
+    `      `      `      `
+
+        )";
+        break;
+    case 3:
+        std::cout << R"(
+
+  ,-.-.  ,-.-.  ,-.-.
+  `. ,'  `. ,'  `. ,'
+    `      `      `
+
+        )";
+        break;
+    case 2:
+        std::cout << R"(
+
+  ,-.-.  ,-.-.
+  `. ,'  `. ,'
+    `      `
+
+        )";
+        break;
+    default:
+        std::cout << R"(
+
+  ,-.-.
+  `. ,'
+    `
+
+        )";
+        break;
     }
 
     std::cout << std::endl;
