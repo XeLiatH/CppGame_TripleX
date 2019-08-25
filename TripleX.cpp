@@ -83,8 +83,6 @@ void printLives(int AmountOfLives)
         )";
         break;
     }
-
-    std::cout << std::endl;
 }
 
 void PrintLevelIntro(int Difficulty, int AmountOfLives)
@@ -141,7 +139,7 @@ bool PlayGame(int Difficulty, int AmountOfLives)
 
     std::cout << "\n > There are 3 numbers in the code";
     std::cout << "\n > The codes add-up to: " << CodeSum;
-    std::cout << "\n > The codes multiply to give: " << CodeProduct << std::endl;
+    std::cout << "\n > The codes multiply to give: " << CodeProduct << "\n\n";
 
     int GuessA, GuessB, GuessC;
     std::cin >> GuessA >> GuessB >> GuessC;
@@ -188,8 +186,6 @@ int main()
             }
         }
     }
-
-    PrintAccessGranted();
 
     std::cout << "\n\n ** Great work! Now get out of there!\n\n";
 
